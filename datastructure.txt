@@ -1,0 +1,67 @@
+Raw Material									
+Product_ID	Name	                activeVersion	    Item per package	total Quantity		Product_ID	Version	    Unit price	
+AYE-MR1	    Bean	                9-1-2022	        1			              -             AYE-WP1	    9-1-2022	    6140	
+AYE-MR2	    MSG	                    9-1-2022	        1			              -             AYE-WP2	    9-1-2022	    9600	
+AYE-MR3	    Sugar	                9-1-2022	        1			              -             AYE-WP3	    9-1-2022	    3100	
+AYE-MR4	    Noodle 	                9-1-2022	        1			              -             AYE-WP4	    9-1-2022	    2900	
+AYE-MR5	    Fish Sauce(star fish)	9-1-2022	        24			              -             AYE-WP5	    9-1-2022	    875	
+================
+==Raw_Material==    pk(Product_ID)
+================
+Product_ID	        ID
+Name                String	                
+activeVersion       Version    
+item per package    INTEGER	
+total Quantity		INTEGER
+
+================
+==Material_Ver==    com(Product_ID,Version)
+================
+Product_ID          ID          	
+Version             STRING	    
+Unit price          INTEGER										
+									
+================                                                               =========
+==Stock_Detail==                                                               ==Users== un(Email) 
+================															   =========                			
+Product_ID	Date	    Quanitity 	Status	    Version		                   Username	    Email	Password	Roles
+AYE-WP1	    10/10/2022	4	        IN	        9-1-2022					   
+AYE-WP2	    10/10/2022	10	        READYMADE	9-1-2022					
+AYE-WP3	    10/10/2022	23	        OUT	        9-1-2022					
+
+================
+==Stock_Details==    fk(Product_ID)
+================
+Product_ID          ID 
+Date                Date	   
+Quanitity           INTEGER	 
+Status              ENUM[IN,OUT,READYMADE]
+Version             STRING	
+
+=========
+==Users==    fk(Product_ID)
+=========
+Username            STRING 
+Email               Email   
+Password            STRING <>	 
+Roles               ENUM[Admin,Employee,Customer]
+Version             STRING	
++++++++++++++++++++++++++++
+        Restful API
++++++++++++++++++++++++++++
+METHOD        EndPoint                      Authorized_Required<Roles>          Data
+POST          /api/user                                                         Creating Account
+POST          /api/user/login                                                   Get JWT token with user Information with payload of id,role,name
+GET           /api/materials                Admin | Employee                    get all materials
+POST          /api/materials                Admin                               add new materials
+GET           /api/materials/:id/           Admin                               show all version of specific :id material 
+POST          /api/materials/:id/version/   Admin                               add new version to specific :id material
+POST          /api/stock/                   Admin | Employee                    add Stock Information
+
+
+
+
+
+
+
+
