@@ -1,7 +1,7 @@
 Raw Material									
-Product_ID	Name	                activeVersion	    Item per package	total Quantity		Product_ID	Version	    Unit price	
+Product_ID	Name	                activeVersion	    Item per package	total Quantity		        Product_ID	    Version	   Unit price	
 AYE-MR1	    Bean	                9-1-2022	        1			              -             AYE-WP1	    9-1-2022	    6140	
-AYE-MR2	    MSG	                    9-1-2022	        1			              -             AYE-WP2	    9-1-2022	    9600	
+AYE-MR2	    MSG	                        9-1-2022	        1			              -             AYE-WP2	    9-1-2022	    9600	
 AYE-MR3	    Sugar	                9-1-2022	        1			              -             AYE-WP3	    9-1-2022	    3100	
 AYE-MR4	    Noodle 	                9-1-2022	        1			              -             AYE-WP4	    9-1-2022	    2900	
 AYE-MR5	    Fish Sauce(star fish)	9-1-2022	        24			              -             AYE-WP5	    9-1-2022	    875	

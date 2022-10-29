@@ -6,6 +6,7 @@ const {
   Stock_Detail,
 } = require("./models");
 const express = require("express");
+const Password = require("./Services/Password");
 const port = process.env.PORT || 4000;
 const app = express();
 app.use(express.json());
@@ -43,7 +44,11 @@ app.listen(port, async () => {
       quantity: 50,
       status: 1,
     });
+    console.log(user.password);
+    console.log(await Password.compare(user.password, "12345"));
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }
 });
+
+module.exports = app;

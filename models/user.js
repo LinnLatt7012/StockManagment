@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const Password = require("../Services/Password");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -9,6 +10,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.addHook("beforeSave", async (record, options) => {
+        record.password = await Password.toHash(record.password);
+      });
     }
   }
   User.init(
