@@ -10,7 +10,7 @@ const port = process.env.PORT || 4000;
 app.listen(port, async () => {
     try {
         await sequelize.authenticate();
-        await sequelize.sync({ force: true });
+        await sequelize.sync({ alter: true });
         console.log("Connection has been established successfully.");
 
         // const product1 = await Raw_Product.create({

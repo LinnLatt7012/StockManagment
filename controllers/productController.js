@@ -17,7 +17,37 @@ exports.getallProducts = async (req, res) => {
     }
 };
 exports.createProduct = async (req, res) => {
-    const {} = req.body;
+    try {
+        const {
+            productName,
+            itemPerPackage,
+            minStock,
+            totalQuantity,
+            unitPrice,
+        } = req.body;
+        console.log("reached");
+        const product = await Raw_Product.create({
+            productName,
+            itemPerPackage,
+            minStock,
+            totalQuantity,
+        });
+        const version = await Product_Ver.create({
+            productID: product.productID,
+            unitPrice,
+        });
+        return res.send({
+            message: "Success",
+            value: {
+                productID: product.productID,
+            },
+        });
+    } catch (error) {
+        return res.send({
+            message: "Error at Creating Product Data",
+            error,
+        });
+    }
 };
 exports.getallVersions = async (req, res) => {
     try {
@@ -35,18 +65,18 @@ exports.getallVersions = async (req, res) => {
         });
     } catch (error) {
         return res.send({
-            message: "Error at updating",
+            message: "Error at getting all versions",
             error,
         });
     }
 };
 exports.updateActiveVersion = async (req, res) => {
     try {
-        const { id } = req.params;
-        const { activeVersion } = req.body;
+        const { id, vid } = req.params;
+        // const { activeVersion } = req.body;
         const product = await Raw_Product.findByPk(id);
         product.set({
-            activeVersion,
+            activeVersion: vid,
         });
         product.save();
         return res.send({
@@ -59,4 +89,21 @@ exports.updateActiveVersion = async (req, res) => {
         });
     }
 };
-exports.createdVersion = async (req, res) => {};
+exports.createdVersion = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { unitPrice } = req.body;
+        const version = await Product_Ver.create({
+            productID: id,
+            unitPrice,
+        });
+        return res.send({
+            message: "Success at Creating new version",
+        });
+    } catch (error) {
+        return res.send({
+            message: "Error at Creating Product Version",
+            error,
+        });
+    }
+};

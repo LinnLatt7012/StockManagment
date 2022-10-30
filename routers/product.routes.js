@@ -9,8 +9,8 @@ const {
 const productRouter = express.Router();
 productRouter.get("/", getallProducts);
 productRouter.post("/", createProduct);
-productRouter.get("/:id", getallVersions);
-productRouter.put("/:id", updateActiveVersion);
+productRouter.put("/:id/versions/:vid", updateActiveVersion);
+productRouter.get("/:id/versions", getallVersions);
 productRouter.post("/:id/versions", createdVersion);
 
 module.exports = productRouter;
