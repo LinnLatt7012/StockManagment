@@ -22,5 +22,6 @@ app.use(
 );
 app.use("/api/users", authRouter);
 app.use("/api/stocks", stockRouter);
+app.use("/api/products", stockRouter);
 
 module.exports = app;

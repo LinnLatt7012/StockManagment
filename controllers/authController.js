@@ -36,6 +36,7 @@ exports.signUp = async (req, res) => {
         return res.send({
             message: `Accounts successfully created`,
             data: user,
+            jwt: userJwt,
         });
     } catch ({ errors }) {
         // const resErr = errors.map((err, index) => {
@@ -123,6 +124,7 @@ exports.signOut = (req, res) => {
 exports.allUser = async (req, res) => {
     const users = await User.findAll();
     return res.status(201).send({
+        message: "Get all users",
         users,
     });
 };
