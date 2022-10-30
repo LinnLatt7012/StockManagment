@@ -20,11 +20,15 @@ exports.requiredAuth = (req, res, next) => {
 };
 
 exports.isAdmin = (req, res, next) => {
-    // console.log(`reach`, req.currentUser.role);
-    if (!(req.currentUser.role == 1 || req.currentUser.role == 3)) {
+    // console.log(`reach`, req.currentUser.role == "admin");
+    if (
+        !(req.currentUser.role == "admin" || req.currentUser.role == "manager")
+    ) {
         return res.status(401).send({
             errors: [{ message: "Unauthorized Access" }],
         });
     }
     next();
 };
+
+// exports.setJWt = ()

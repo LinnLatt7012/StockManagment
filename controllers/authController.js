@@ -33,16 +33,16 @@ exports.signUp = async (req, res) => {
             jwt: userJwt,
         };
 
-        return res.status(201).send({
+        return res.send({
             message: `Accounts successfully created`,
             data: user,
         });
     } catch ({ errors }) {
-        const resErr = errors.map((err, index) => {
-            return { message: err.message, value: err.value };
-        });
+        // const resErr = errors.map((err, index) => {
+        //     return { message: err.message, value: err.value };
+        // });
         return res.send({
-            errors: resErr,
+            errors,
         });
     }
 };
@@ -91,13 +91,15 @@ exports.signIn = async (req, res) => {
         },
         process.env.JWT_Key
     );
-
+    req.session = {
+        jwt: null,
+    };
     req.session = {
         jwt: userJwt,
     };
 
     return res.status(201).send({
-        message: `Accounts successfully Login `,
+        message: `Accounts successfully Login`,
         data: {
             email: storedUser.email,
             role: storedUser.role,
@@ -122,5 +124,24 @@ exports.allUser = async (req, res) => {
     const users = await User.findAll();
     return res.status(201).send({
         users,
+    });
+};
+
+exports.updateUser = async (req, res) => {
+    const { firstName, lastName, email, role } = req.body;
+    const oldUser = await User.findOne({
+        where: { email: req.currentUser.email },
+    });
+    const updateUserInfo = {
+        firstName: firstName || oldUser.firstName,
+        lastName: lastName || oldUser.lastName,
+        email: email || oldUser.email,
+        role: role || oldUser.role,
+    };
+    await oldUser.set(updateUserInfo);
+    oldUser.save();
+    console.log(oldUser);
+    return res.status(201).send({
+        oldUser,
     });
 };
