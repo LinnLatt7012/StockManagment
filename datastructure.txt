@@ -52,6 +52,9 @@ Version             STRING
 METHOD        EndPoint                      Authorized_Required<Roles>          Data
 POST          /api/user                                                         Creating Account
 POST          /api/user/login                                                   Get JWT token with user Information with payload of id,role,name
+
+
+
 GET           /api/materials                Admin | Employee                    get all materials
 POST          /api/materials                Admin                               add new materials
 GET           /api/materials/:id/           Admin                               show all version of specific :id material 
