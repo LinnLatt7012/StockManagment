@@ -6,6 +6,7 @@ const {
     Product_Ver,
     Stock_Detail,
 } = require("./models");
+const port = process.env.PORT || 4000;
 app.listen(port, async () => {
     try {
         await sequelize.authenticate();
@@ -13,16 +14,10 @@ app.listen(port, async () => {
         console.log("Connection has been established successfully.");
 
         // const product1 = await Raw_Product.create({
-        //   materialName: "Bean Sauce",
-        //   activeVersion: "",
-        //   itemPerPackage: 1,
-        //   totalQuantity: 10,
-        // });
-        // const product2 = await Raw_Product.create({
-        //   materialName: "Lake Sauce",
-        //   activeVersion: "",
-        //   itemPerPackage: 1,
-        //   totalQuantity: 10,
+        //     materialName: "Bean Sauce",
+        //     minStock: 10,
+        //     itemPerPackage: 1,
+        //     totalQuantity: 10,
         // });
         // const user = await User.create({
         //   firstName: "Linn",
@@ -31,8 +26,8 @@ app.listen(port, async () => {
         //   password: "12345",
         // });
         // const pd_vr = await Product_Ver.create({
-        //   productID: 2,
-        //   unitPrice: 3500,
+        //     productID: product1.productID,
+        //     unitPrice: 3500,
         // });
         // const stockrd = await Stock_Detail.create({
         //   productID: 2,
