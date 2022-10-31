@@ -55,10 +55,10 @@ POST          /api/user/login                                                   
 
 
 
-GET           /api/materials                Admin | Employee                    get all materials
-POST          /api/materials                Admin                               add new materials
-GET           /api/materials/:id/           Admin                               show all version of specific :id material 
-POST          /api/materials/:id/version/   Admin                               add new version to specific :id material
+GET           /api/proucts                Admin | Employee                    get all materials
+POST          /api/products                Admin                               add new materials
+GET           /api/products/:id/           Admin                               show all version of specific :id material 
+POST          /api/products/:id/version/   Admin                               add new version to specific :id material
 POST          /api/stock/                   Admin | Employee                    add Stock Information
 
 

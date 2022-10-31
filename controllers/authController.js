@@ -10,7 +10,6 @@ exports.currentUser = (req, res) => {
 
 exports.signUp = async (req, res) => {
     const { firstName, lastName, email, password, role } = req.body;
-    //   console.log(req.body);
     try {
         const user = await User.create({
             firstName,
@@ -35,28 +34,22 @@ exports.signUp = async (req, res) => {
 
         return res.send({
             message: `Accounts successfully created`,
-            data: user,
             jwt: userJwt,
         });
-    } catch ({ errors }) {
-        // const resErr = errors.map((err, index) => {
-        //     return { message: err.message, value: err.value };
-        // });
+    } catch (error) {
         return res.send({
-            errors,
+            message: "Error at Creating Accounts",
+            error,
         });
     }
 };
 
 exports.signIn = async (req, res) => {
     const { email, password } = req.body;
-    if (!email) {
+    if (!email || !password) {
         return res.status(400).send({
-            errors: [
-                {
-                    message: "You have to provide Email in your request",
-                },
-            ],
+            message: "You have to provide Email & Password in your request",
+            error: { email, password },
         });
     }
 
@@ -67,23 +60,20 @@ exports.signIn = async (req, res) => {
     });
     if (!storedUser) {
         return res.status(404).send({
-            errors: [
-                {
-                    message: "There is no Such Email",
-                    value: email,
-                },
-            ],
+            message: "There is no Such Email",
+            error: {
+                value: email,
+            },
         });
     }
-    if (!(await Password.compare(storedUser.password, password)))
+    if (!(await Password.compare(storedUser.password, password))) {
         return res.status(401).send({
-            errors: [
-                {
-                    message: "Your Password is Wrong",
-                    value: password,
-                },
-            ],
+            message: "Your Password is Wrong",
+            error: {
+                password,
+            },
         });
+    }
     const userJwt = jwt.sign(
         {
             id: storedUser.id,
@@ -122,28 +112,42 @@ exports.signOut = (req, res) => {
 };
 
 exports.allUser = async (req, res) => {
-    const users = await User.findAll();
-    return res.status(201).send({
-        message: "Get all users",
-        users,
-    });
+    try {
+        const users = await User.findAll();
+        return res.status(201).send({
+            message: "Get all users",
+            users,
+        });
+    } catch (error) {
+        return res.status(400).send({
+            message: "Error at getting Users",
+            error,
+        });
+    }
 };
 
 exports.updateUser = async (req, res) => {
     const { firstName, lastName, email, role } = req.body;
-    const oldUser = await User.findOne({
-        where: { email: req.currentUser.email },
-    });
-    const updateUserInfo = {
-        firstName: firstName || oldUser.firstName,
-        lastName: lastName || oldUser.lastName,
-        email: email || oldUser.email,
-        role: role || oldUser.role,
-    };
-    await oldUser.set(updateUserInfo);
-    oldUser.save();
-    console.log(oldUser);
-    return res.status(201).send({
-        oldUser,
-    });
+    try {
+        const oldUser = await User.findOne({
+            where: { email: req.currentUser.email },
+        });
+        const updateUserInfo = {
+            firstName: firstName || oldUser.firstName,
+            lastName: lastName || oldUser.lastName,
+            email: email || oldUser.email,
+            role: role || oldUser.role,
+        };
+        await oldUser.set(updateUserInfo);
+        oldUser.save();
+        console.log(oldUser);
+        return res.status(201).send({
+            oldUser,
+        });
+    } catch (error) {
+        return res.status(400).send({
+            message: "Error at updating Users",
+            error,
+        });
+    }
 };

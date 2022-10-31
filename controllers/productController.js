@@ -25,7 +25,7 @@ exports.createProduct = async (req, res) => {
             totalQuantity,
             unitPrice,
         } = req.body;
-        console.log("reached");
+        // console.log("reached");
         const product = await Raw_Product.create({
             productName,
             itemPerPackage,
