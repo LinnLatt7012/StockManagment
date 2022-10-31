@@ -1,11 +1,15 @@
 const jwt = require("jsonwebtoken");
 exports.setCurrentUser = (req, res, next) => {
-    if (!req.session?.jwt) return next();
-
+    const bearerHeader = req.headers["authorization"];
+    if (!bearerHeader) return next();
     try {
-        const payload = jwt.verify(req.session.jwt, process.env.JWT_Key);
+        const bearer = bearerHeader.split(" ");
+        const bearerToken = bearer[1];
+        const payload = jwt.verify(bearerToken, process.env.JWT_Key);
         req.currentUser = payload;
-    } catch (err) {}
+    } catch (err) {
+        res.sendStatus(403);
+    }
     next();
 };
 
