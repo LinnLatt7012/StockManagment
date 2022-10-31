@@ -10,6 +10,9 @@ exports.currentUser = (req, res) => {
 
 exports.signUp = async (req, res) => {
     const { firstName, lastName, email, password, role } = req.body;
+    firstName = firstName || "";
+    lastName = lastName || "";
+    role = role || 4;
     try {
         const user = await User.create({
             firstName,
@@ -27,10 +30,6 @@ exports.signUp = async (req, res) => {
             },
             process.env.JWT_Key
         );
-
-        req.session = {
-            jwt: userJwt,
-        };
 
         return res.send({
             message: `Accounts successfully created`,
@@ -82,26 +81,18 @@ exports.signIn = async (req, res) => {
         },
         process.env.JWT_Key
     );
-    req.session = {
-        jwt: null,
-    };
-    req.session = {
-        jwt: userJwt,
-    };
 
     return res.status(201).send({
         message: `Accounts successfully Login`,
         data: {
             email: storedUser.email,
             role: storedUser.role,
+            jwt: userJwt,
         },
     });
 };
 
 exports.signOut = (req, res) => {
-    req.session = {
-        jwt: null,
-    };
     return res.status(201).send({
         message: `Accounts successfully Logout `,
         data: {
@@ -127,7 +118,7 @@ exports.allUser = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
-    const { firstName, lastName, email, role } = req.body;
+    const { firstName, lastName, email } = req.body;
     try {
         const oldUser = await User.findOne({
             where: { email: req.currentUser.email },
@@ -136,7 +127,6 @@ exports.updateUser = async (req, res) => {
             firstName: firstName || oldUser.firstName,
             lastName: lastName || oldUser.lastName,
             email: email || oldUser.email,
-            role: role || oldUser.role,
         };
         await oldUser.set(updateUserInfo);
         oldUser.save();

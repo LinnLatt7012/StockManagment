@@ -25,7 +25,6 @@ exports.createProduct = async (req, res) => {
             totalQuantity,
             unitPrice,
         } = req.body;
-        // console.log("reached");
         const product = await Raw_Product.create({
             productName,
             itemPerPackage,
@@ -73,7 +72,6 @@ exports.getallVersions = async (req, res) => {
 exports.updateActiveVersion = async (req, res) => {
     try {
         const { id, vid } = req.params;
-        // const { activeVersion } = req.body;
         const product = await Raw_Product.findByPk(id);
         product.set({
             activeVersion: vid,
