@@ -32,8 +32,9 @@ exports.createProduct = async (req, res) => {
             totalQuantity,
             unitPrice,
         } = req.body;
+        json = JSON.stringify(productName);
         const product = await Raw_Product.create({
-            productName,
+            productName: json,
             itemPerPackage,
             minStock,
             totalQuantity,
