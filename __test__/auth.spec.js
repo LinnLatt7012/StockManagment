@@ -50,6 +50,7 @@ describe("User Registration", () => {
                     });
             });
     });
+
     it("return 200 Ok when all user is request", (done) => {
         request(app)
             .post("/api/users/signup")
@@ -63,7 +64,6 @@ describe("User Registration", () => {
             .then((cres) => {
                 request(app)
                     .get("/api/users/")
-                    .set("session", cres.jwt)
                     .then((res) => {
                         expect(res.body.message).toBe("Get all users");
                         done();

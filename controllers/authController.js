@@ -33,7 +33,11 @@ exports.signUp = async (req, res) => {
 
         return res.send({
             message: `Accounts successfully created`,
-            jwt: userJwt,
+            value: {
+                email: user.email,
+                role: user.role,
+                jwt: userJwt,
+            },
         });
     } catch (error) {
         return res.send({
@@ -84,7 +88,7 @@ exports.signIn = async (req, res) => {
 
     return res.status(201).send({
         message: `Accounts successfully Login`,
-        data: {
+        value: {
             email: storedUser.email,
             role: storedUser.role,
             jwt: userJwt,
@@ -95,7 +99,7 @@ exports.signIn = async (req, res) => {
 exports.signOut = (req, res) => {
     return res.status(201).send({
         message: `Accounts successfully Logout `,
-        data: {
+        value: {
             email: req.currentUser.email,
             role: req.currentUser.role,
         },

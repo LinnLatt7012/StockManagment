@@ -2,7 +2,14 @@ const { Raw_Product, Product_Ver } = require("../models");
 
 exports.getallProducts = async (req, res) => {
     try {
-        const products = await Raw_Product.findAll();
+        const products = await Raw_Product.findAll({
+            include: [
+                {
+                    model: Product_Ver,
+                    as: "versions",
+                },
+            ],
+        });
         return res.send({
             message: "Success",
             value: {
