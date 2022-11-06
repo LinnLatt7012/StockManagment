@@ -1,3 +1,5 @@
+const { QueryTypes } = require("sequelize");
+const db = require("../models");
 const { Stock_Detail, Product_Ver, sequelize } = require("../models");
 
 exports.addStock = async (req, res) => {
@@ -40,3 +42,19 @@ exports.allStocks = async (req, res) => {
         });
     }
 };
+
+exports.toalStock = async (req, res) => {
+    var { nofDays } = req.query;
+    nofDays = nofDays || 7;
+    const sql = `SELECT S.date,SUM(S.quantity)*V.unitPrice as TOTAL FROM (SELECT * FROM stock_details as sd WHERE DATE(sd.date) > SUBDATE(CURDATE(), ${nofDays})) AS S LEFT JOIN product_vers as V ON S.version=V.id GROUP BY S.productID,S.version`;
+    const result = await sequelize.query(sql, { type: QueryTypes.SELECT });
+    return res.send({
+        meassage: "",
+        result,
+    });
+};
+// SELECT S.date,SUM(S.quantity),V.unitPrice FROM 'stock_details' as S LEFT JOIN 'product_vers' as V ON S.version=V.id GROUP BY S.productID,S.version
+
+// SELECT S.date,SUM(S.quantity)*V.unitPrice as total FROM `stock_details` as S LEFT JOIN `product_vers` as V ON S.version=V.id GROUP BY S.productID,S.version
+// 151800
+// CURRENT_DATE()
