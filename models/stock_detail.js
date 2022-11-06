@@ -7,11 +7,15 @@ module.exports = (sequelize, DataTypes) => {
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
-        static associate({ Raw_Product }) {
+        static associate({ Raw_Product, Product_Ver }) {
             // define association here
             this.belongsTo(Raw_Product, {
                 foreignKey: "productID",
                 as: "product",
+            });
+            this.belongsTo(Product_Ver, {
+                foreignKey: "id",
+                as: "ver",
             });
             Stock_Detail.addHook("beforeCreate", async (record, options) => {
                 // console.log(record);
@@ -43,10 +47,10 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.ENUM,
                 values: ["in", "out", "readymade"],
             },
-            version: DataTypes.INTEGER,
         },
         {
             sequelize,
+            timestamps: false,
             modelName: "Stock_Detail",
         }
     );

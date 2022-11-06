@@ -26,14 +26,16 @@ exports.getallProducts = async (req, res) => {
 exports.createProduct = async (req, res) => {
     try {
         const {
-            productName,
+            mmName,
+            enName,
             itemPerPackage,
             minStock,
             totalQuantity,
             unitPrice,
         } = req.body;
-        json = JSON.stringify(productName);
         const product = await Raw_Product.create({
+            mmName,
+            enName,
             productName: json,
             itemPerPackage,
             minStock,

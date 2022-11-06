@@ -26,11 +26,15 @@ module.exports = (sequelize, DataTypes) => {
                 primaryKey: true,
                 autoIncrement: true,
             },
-            productName: {
+            enName: {
                 type: DataTypes.STRING,
                 unique: true,
             },
-            activeVersion: DataTypes.STRING,
+            mmName: {
+                type: DataTypes.STRING,
+                unique: true,
+            },
+            activeVersion: DataTypes.INTEGER,
             itemPerPackage: {
                 type: DataTypes.INTEGER,
                 // defaultValue: 1,
