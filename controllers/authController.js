@@ -24,7 +24,7 @@ exports.signUp = async (req, res) => {
         //   Generate JWT
         const userJwt = jwt.sign(
             {
-                id: user.id,
+                user_id: user.id,
                 email: user.email,
                 role: user.role,
             },
@@ -33,6 +33,7 @@ exports.signUp = async (req, res) => {
         return res.send({
             message: `Accounts successfully created`,
             value: {
+                user_id: user.userID,
                 email: user.email,
                 role: user.role,
                 jwt: userJwt,
@@ -76,9 +77,10 @@ exports.signIn = async (req, res) => {
             },
         });
     }
+    console.log(storedUser.userID);
     const userJwt = jwt.sign(
         {
-            id: storedUser.id,
+            user_id: storedUser.userID,
             email: storedUser.email,
             role: storedUser.role,
         },
@@ -87,6 +89,7 @@ exports.signIn = async (req, res) => {
     return res.status(201).send({
         message: `Accounts successfully Login`,
         value: {
+            user_id: storedUser.id,
             email: storedUser.email,
             role: storedUser.role,
             jwt: userJwt,
@@ -135,7 +138,7 @@ exports.updateUser = async (req, res) => {
         console.log(oldUser);
         const userJwt = jwt.sign(
             {
-                id: storedUser.id,
+                user_id: storedUser.userID,
                 email: storedUser.email,
                 role: storedUser.role,
             },

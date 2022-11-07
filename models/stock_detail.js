@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     Stock_Detail.init(
         {
             date: {
-                type: DataTypes.DATEONLY,
+                type: DataTypes.DATE,
                 defaultValue: DataTypes.NOW,
             },
             quantity: DataTypes.INTEGER,

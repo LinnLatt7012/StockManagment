@@ -4,10 +4,11 @@ const {
     allStocks,
     totalStock,
 } = require("../controllers/stockController");
+const { setCurrentUser, requiredAuth } = require("../middleware/auth");
 const stockRouter = express.Router();
 
-stockRouter.post("/", addStock);
-stockRouter.get("/", allStocks);
-stockRouter.get("/dashboard", totalStock);
+stockRouter.post("/", setCurrentUser, requiredAuth, addStock);
+stockRouter.get("/", setCurrentUser, requiredAuth, allStocks);
+stockRouter.get("/dashboard", setCurrentUser, requiredAuth, totalStock);
 
 module.exports = stockRouter;
