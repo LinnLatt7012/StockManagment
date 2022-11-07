@@ -11,7 +11,9 @@ exports.addStock = async (req, res) => {
             status,
         });
         return res.send({
-            meassage: "Stock added",
+            meassage: `You have ${
+                status == "1" ? "added" : "removed"
+            } ${quantity} quantities from product`,
         });
     } catch (error) {
         return res.send({
@@ -26,7 +28,6 @@ exports.allStocks = async (req, res) => {
         const stocks = await Stock_Detail.findAll({
             include: {
                 model: Product_Ver,
-                as: "ver",
             },
         });
         return res.send({
@@ -43,14 +44,22 @@ exports.allStocks = async (req, res) => {
     }
 };
 
-exports.toalStock = async (req, res) => {
-    var { nofDays } = req.query;
+exports.totalStock = async (req, res) => {
+    var { nofDays, stockOut, readyMade } = req.query;
     nofDays = nofDays || 7;
-    const sql = `SELECT S.date,SUM(S.quantity)*V.unitPrice as TOTAL FROM (SELECT * FROM stock_details as sd WHERE DATE(sd.date) > SUBDATE(CURDATE(), ${nofDays})) AS S LEFT JOIN product_vers as V ON S.version=V.id GROUP BY S.productID,S.version`;
+    statusCon =
+        stockOut == "true"
+            ? `sd.status=2 ${readyMade == "true" ? "OR sd.status=3" : ""}`
+            : "sd.status=1";
+    console.log(statusCon);
+    const sql = `SELECT S.date,SUM(S.quantity)*V.unitPrice as TOTAL 
+    FROM (SELECT * FROM stock_details as sd WHERE 
+    (DATE(sd.date) > SUBDATE(CURDATE(), ${nofDays})) AND (${statusCon})) AS S 
+    LEFT JOIN product_vers as V ON S.version=V.id GROUP BY S.productID,S.version`;
     const result = await sequelize.query(sql, { type: QueryTypes.SELECT });
     return res.send({
-        meassage: "",
-        result,
+        meassage: "total",
+        value: result,
     });
 };
 // SELECT S.date,SUM(S.quantity),V.unitPrice FROM 'stock_details' as S LEFT JOIN 'product_vers' as V ON S.version=V.id GROUP BY S.productID,S.version

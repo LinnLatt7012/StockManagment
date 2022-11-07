@@ -14,8 +14,7 @@ module.exports = (sequelize, DataTypes) => {
                 as: "product",
             });
             this.belongsTo(Product_Ver, {
-                foreignKey: "id",
-                as: "ver",
+                foreignKey: "version",
             });
             Stock_Detail.addHook("beforeCreate", async (record, options) => {
                 // console.log(record);

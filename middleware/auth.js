@@ -12,10 +12,8 @@ exports.setCurrentUser = (req, res, next) => {
     }
     next();
 };
-
 exports.requiredAuth = (req, res, next) => {
     if (!req.currentUser) {
-        // res.set("Content-Type", "text/html");
         return res.status(401).send({
             errors: [{ message: "Unauthorized Access" }],
         });
@@ -24,7 +22,6 @@ exports.requiredAuth = (req, res, next) => {
 };
 
 exports.isAdmin = (req, res, next) => {
-    // console.log(`reach`, req.currentUser.role == "admin");
     if (
         !(req.currentUser.role == "admin" || req.currentUser.role == "manager")
     ) {

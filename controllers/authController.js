@@ -9,7 +9,7 @@ exports.currentUser = (req, res) => {
 };
 
 exports.signUp = async (req, res) => {
-    const { firstName, lastName, email, password, role } = req.body;
+    let { firstName, lastName, email, password, role } = req.body;
     firstName = firstName || "";
     lastName = lastName || "";
     role = role || 4;
@@ -30,7 +30,6 @@ exports.signUp = async (req, res) => {
             },
             process.env.JWT_Key
         );
-
         return res.send({
             message: `Accounts successfully created`,
             value: {
@@ -85,7 +84,6 @@ exports.signIn = async (req, res) => {
         },
         process.env.JWT_Key
     );
-
     return res.status(201).send({
         message: `Accounts successfully Login`,
         value: {
@@ -133,10 +131,18 @@ exports.updateUser = async (req, res) => {
             email: email || oldUser.email,
         };
         await oldUser.set(updateUserInfo);
-        oldUser.save();
+        const storedUser = await oldUser.save();
         console.log(oldUser);
+        const userJwt = jwt.sign(
+            {
+                id: storedUser.id,
+                email: storedUser.email,
+                role: storedUser.role,
+            },
+            process.env.JWT_Key
+        );
         return res.status(201).send({
-            oldUser,
+            message: "Success at updating Users",
         });
     } catch (error) {
         return res.status(400).send({

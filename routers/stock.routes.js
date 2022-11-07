@@ -2,12 +2,12 @@ const express = require("express");
 const {
     addStock,
     allStocks,
-    toalStock,
+    totalStock,
 } = require("../controllers/stockController");
 const stockRouter = express.Router();
 
 stockRouter.post("/", addStock);
 stockRouter.get("/", allStocks);
-stockRouter.get("/dashboard", toalStock);
+stockRouter.get("/dashboard", totalStock);
 
 module.exports = stockRouter;
